@@ -1,11 +1,20 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
+interface Employee {
+    name: string;
+    email: string;
+    salary: string;
+    address: string;
+    category_id: string;
+    image: string;
+    id: number;
+}
 export const EmployeeDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [employeeDetails, setEmployeeDetails] = useState([]);
+    const [employeeDetails, setEmployeeDetails] = useState<Employee>();
 
     useEffect(() => {
         axios.get(`http://localhost:3000/employee/detail/` + id)
@@ -38,7 +47,7 @@ export const EmployeeDetails = () => {
             <div className="p-2 d-flex justify-content-center shadow">
                 <h4>Employee Management System</h4>
             </div>
-          <div className='d-flex justify-content-center flex-column align-items-center mt-3'>
+            <div className='d-flex justify-content-center flex-column align-items-center mt-3'>
                 <img src={`http://localhost:3000/Images/` + employeeDetails.image} className='emp_det_image' />
                 <div className='d-flex align-items-center flex-column mt-5'>
                     <h3>Name: {employeeDetails.name}</h3>
@@ -46,7 +55,6 @@ export const EmployeeDetails = () => {
                     <h3>Salary: ${employeeDetails.salary}</h3>
                 </div>
                 <div>
-                    <button className='btn btn-primary me-2'>Edit</button>
                     <button className='btn btn-danger' onClick={handleLogout}>Logout</button>
                 </div>
             </div>

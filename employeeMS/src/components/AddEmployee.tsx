@@ -1,18 +1,32 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
+interface Employee {
+    name: string;
+    email: string;
+    password: string;
+    salary: number;
+    address: string;
+    category_id: number;
+    image: File | string | null;
+}
+interface Category {
+    id: number;
+    name: string;
+}
+
 export const AddEmployee = () => {
-    const [employee, setEmployee] = useState({
+    const [employee, setEmployee] = useState<Employee>({
         name: "",
         email: "",
         password: "",
-        salary: "",
+        salary: 0,
         address: "",
-        category_id: "",
+        category_id: 0,
         image: "",
     });
-    const [category, setCategory] = useState()
+    const [category, setCategory] = useState<Category[]>()
     const navigate = useNavigate()
 
 
@@ -30,16 +44,18 @@ export const AddEmployee = () => {
             .catch((err) => console.log(err));
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData();
         formData.append('name', employee.name);
         formData.append('email', employee.email);
         formData.append('password', employee.password);
         formData.append('address', employee.address);
-        formData.append('salary', employee.salary);
-        formData.append('image', employee.image);
-        formData.append('category_id', employee.category_id);
+        formData.append('salary', employee.salary.toString());
+        formData.append('category_id', employee.category_id.toString());
+        if (employee.image) {
+            formData.append('image', employee.image);
+        }
 
         axios({ method: 'post', url: 'http://localhost:3000/auth/add_employee', data: formData, headers: { "Content-Type": "multipart/form-data" } })
             /*  axios.post('http://localhost:3000/auth/add_employee', formData) */
@@ -115,7 +131,7 @@ export const AddEmployee = () => {
                             placeholder="Enter Salary"
                             autoComplete="off"
                             onChange={(e) =>
-                                setEmployee({ ...employee, salary: e.target.value })
+                                setEmployee({ ...employee, salary: parseInt(e.target.value) })
                             }
                         />
                     </div>
@@ -139,7 +155,7 @@ export const AddEmployee = () => {
                             Category
                         </label>
                         <select name="category" id="category" className="form-select"
-                            onChange={(e) => setEmployee({ ...employee, category_id: e.target.value })}>
+                            onChange={(e) => setEmployee({ ...employee, category_id: parseInt(e.target.value) })}>
                             {category.map(c => {
                                 return <option value={c.id}>{c.name}</option>
                             })}
@@ -154,7 +170,12 @@ export const AddEmployee = () => {
                             className="form-control rounded-0"
                             id="inputGroupFile01"
                             name="image"
-                            onChange={(e) => setEmployee({ ...employee, image: e.target.files[0] })}
+                            onChange={(e) => {
+                                const file = e.target.files ? e.target.files[0] : null;
+                                if (file) {
+                                    setEmployee({ ...employee, image: file });
+                                }
+                            }}
                         />
                     </div>
                     <div className="col-12">

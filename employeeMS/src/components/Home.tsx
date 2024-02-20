@@ -1,18 +1,22 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
+interface Admin {
+  email: string
+}
+
 export const Home = () => {
-  const [adminTotal, setAdminTotal] = useState(0)
-  const [employeeTotal, setemployeeTotal] = useState(0)
-  const [salaryTotal, setSalaryTotal] = useState(0)
-  const [admins, setAdmins] = useState([])
-  
+  const [adminTotal, setAdminTotal] = useState<number>(0)
+  const [employeeTotal, setemployeeTotal] = useState<number>(0)
+  const [salaryTotal, setSalaryTotal] = useState<number>(0)
+  const [admins, setAdmins] = useState<Admin[]>([])
+
   useEffect(() => {
     getAdminCount();
     getEmployeeCount();
     getSalaryCount();
     AdminRecords();
-  },[])
+  }, [])
 
   const AdminRecords = () => {
     axios.get('http://localhost:3000/auth/admin_records')

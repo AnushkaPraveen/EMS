@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { ReactNode, FC } from 'react'
 import { Navigate } from 'react-router-dom'
 
-export const PrivateRoute = ({ children }) => {
+interface PrivateRouteProps {
+    children: ReactNode;
+}
+
+export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
     return localStorage.getItem("valid") ? children : <Navigate to='/' />
 
 

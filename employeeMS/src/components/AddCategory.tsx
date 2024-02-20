@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 export const AddCategory = () => {
-    const [category, setCategory] = useState()
+    const [category, setCategory] = useState<string>()
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         axios.post('http://localhost:3000/auth/add_category', { category })
             .then(result => {

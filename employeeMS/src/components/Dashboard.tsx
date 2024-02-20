@@ -53,7 +53,7 @@ export const Dashboard = () => {
                                 </Link>
                             </li>
                             <li className="w-100" onClick={handleLogout}>
-                                <Link className="nav-link px-0 align-middle text-white">
+                                <Link to='/' className="nav-link px-0 align-middle text-white">
                                     <i className="fs-4 bi-power ms-2"></i>
                                     <span className="ms-2 d-none d-sm-inline">Logout</span>
                                 </Link>

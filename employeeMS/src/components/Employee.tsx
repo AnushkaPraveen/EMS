@@ -3,8 +3,18 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './styles.css';
 
+interface Employee {
+    name: string;
+    email: string;
+    salary: string;
+    address: string;
+    category_id: string;
+    image: string;
+    id: number;
+}
+
 export const Employee = () => {
-    const [employee, setEmployee] = useState([]);
+    const [employee, setEmployee] = useState<Employee[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +31,7 @@ export const Employee = () => {
             )
     }, [])
 
-    const handleDelete = (id) => {
+    const handleDelete = (id: number) => {
         axios.delete(`http://localhost:3000/auth/delete_employee/` + id)
             .then(result => {
                 if (result.data.Status) {

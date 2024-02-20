@@ -1,23 +1,28 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface FormValues {
+  email: string;
+  password: string;
+}
+
 export const EmployeeLogin = () => {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<FormValues>({
     email: '',
     password: ''
   })
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("clicked");
     axios.defaults.withCredentials = true;
     axios.post('http://localhost:3000/employee/employee_login', values)
       .then(result => {
         if (result.data.loginStatus) {
-          localStorage.setItem("valid", true)
+          localStorage.setItem("valid", "true")
           navigate('/employee_details/' + result.data.id)
         } else {
           setError(result.data.Error)

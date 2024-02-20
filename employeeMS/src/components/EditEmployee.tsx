@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+interface Employee {
+  name: string;
+  email: string;
+  salary: string;
+  address: string;
+  category_id: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 export const EditEmployee = () => {
   const { id } = useParams();
-  const [employee, setEmployee] = useState({
+  const [employee, setEmployee] = useState<Employee>({
     name: "",
     email: "",
     salary: "",
     address: "",
     category_id: "",
   });
-  const [category, setCategory] = useState()
+  const [category, setCategory] = useState<Category[]>()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -39,7 +51,7 @@ export const EditEmployee = () => {
       )
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     axios.put('http://localhost:3000/auth/edit_employee/' + id, employee)
@@ -56,7 +68,7 @@ export const EditEmployee = () => {
   if (!category) {
     return (<div><h1>Loading</h1></div>)
   }
-  
+
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
       <div className="p-3 rounded w-50 border">
